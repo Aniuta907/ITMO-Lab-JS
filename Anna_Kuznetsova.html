@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html lang="en">
+ <head>
+  <meta charset="utf-8">
+  <title>Anna_Kuznetsova</title>
+ </head>
+ <body>
+
+<body>
+    <div>
+        <input id="inp">
+        <button id="bt">Button</button>
+    </div>
+    <script>
+        let button = document.querySelector('#bt');
+        let hashInput = document.querySelector('#inp');
+
+        async function digestMessage(message) {
+            const msgUint8 = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-1', msgUint8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        button.addEventListener('click', async(evt) => {
+            const digestBuffer = await digestMessage(hashInput.value);
+            hashInput.value = digestBuffer;
+        });
+    </script>
+</body>
+
+</html>
